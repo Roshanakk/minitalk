@@ -7,7 +7,9 @@ SRC	= ft_printf.c	\
 	ft_putstr_fd.c \
 	ft_itoa.c \
 	ft_strdup.c \
-	ft_atoi.c
+	ft_atoi.c \
+	ft_putnbr_bin.c \
+	ft_strjoin.c \
 
 OBJ = ${SRC:.c=.o}
 

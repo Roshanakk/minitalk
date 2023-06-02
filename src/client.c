@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:27:54 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/01 16:46:12 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:03:44 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,52 @@
 
 int x;
 
-void handle_signals(int signal)
+// void handle_signals(int signal)
+// {
+// 	if (signal == SIGUSR1)
+// 		ft_printf("signal 1");
+// 	if (signal == SIGUSR2)
+// 		ft_printf("signal 2");
+// }
+
+void send_message(char *str, pid_t server_pid)
 {
-	if (signal == SIGUSR1)
-		ft_printf("signal 1");
-	if (signal == SIGUSR2)
-		ft_printf("signal 2");
+	kill(server_pid, SIGUSR1);
 }
 
 int main(int argc, char **argv)
 {
 	struct sigaction sig;
-	int pid;
+	char	*buffer;
+	int k;
 
-	(void) argc;
-	sig.sa_handler = &handle_signals;
+	// (void) buffer;
+	// (void) argc;
+	// sig.sa_handler = &handle_signals;
 	sigaction(SIGUSR1, &sig, NULL);
 	sigaction(SIGUSR2, &sig, NULL);
-	pid = getpid();
-	ft_putstr_fd("PID :");
-	ft_putstr_fd(ft_itoa(getpid()));
-	
-	while (1)
+	buffer = ft_strdup("\0");
+	if (!buffer)
+		return (0);
+	if (argc > 2)
 	{
-		pause();
-		kill(ft_atoi(argv[1]), SIGUSR2);
+		buffer = ft_strjoin(buffer, argv[2]);
+		if (!buffer)
+		{
+			free(buffer);
+			return (0);
+		}
 	}
+	k = 0;
+	if (argc > 2)
+		send_message(buffer, ft_atoi(getpid()));
+	if (k < 0)
+	{
+		free(buffer);
+		return (0);
+	}
+	while (1)
+		pause();
 }
 
 // int x = 0;

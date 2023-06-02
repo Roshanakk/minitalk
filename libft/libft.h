@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 14:18:47 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/01 16:22:21 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/02 15:52:44 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	ft_intochar(int a, int *nbr);
 void	ft_pointer(char c, va_list args, int *nbr);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *s);
-int	ft_atoi(const char *nptr);
+int	    ft_atoi(const char *nptr);
+int	    ft_putnbr_bin(unsigned long long nb);
+char	*ft_strjoin(char const *s1, char const *s2);
+// void	ft_putchar_bin(char c);
+// void	ft_putnbr_bin(unsigned long long nb);
 
 #endif
