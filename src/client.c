@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Roxy <Roxy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:27:54 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/02 17:03:44 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:58:01 by Roxy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,112 +25,96 @@ int x;
 // 		ft_printf("signal 2");
 // }
 
-void send_message(char *str, pid_t server_pid)
+static void handle_signals(int signal)
 {
-	kill(server_pid, SIGUSR1);
+	if (signal == SIGUSR1)
+		ft_printf("message received");
+}
+
+void send_message(char c, pid_t server_pid)
+{
+	int	bit;
+	int success;
+	// int	i;
+
+	bit = 0;
+	// i = 0;
+	while (bit < 8)
+	{
+		if ((c & (1 << bit)))
+		{
+			success = kill(server_pid, SIGUSR1);
+			if (success < 0)
+				exit (0);
+		}
+		else
+		{
+			success = kill(server_pid, SIGUSR2);
+			if (success < 0)
+				exit (0);			
+		}
+		usleep(100);
+		bit++;
+	}
 }
 
 int main(int argc, char **argv)
 {
 	struct sigaction sig;
 	char	*buffer;
-	int k;
+	// int k;
+	int i;
+	int j;
 
-	// (void) buffer;
-	// (void) argc;
-	// sig.sa_handler = &handle_signals;
+	ft_putstr_fd(ft_itoa(getpid()));
+	(void) argc;
+	(void) argv;
+	ft_bzero(&sig, sizeof(sig));
+	sig.sa_handler = &handle_signals;
 	sigaction(SIGUSR1, &sig, NULL);
-	sigaction(SIGUSR2, &sig, NULL);
-	buffer = ft_strdup("\0");
-	if (!buffer)
-		return (0);
-	if (argc > 2)
+	// sigaction(SIGUSR2, &sig, NULL);
+	if (argc > 1)
 	{
-		buffer = ft_strjoin(buffer, argv[2]);
+		buffer = ft_strdup("\0");
 		if (!buffer)
-		{
-			free(buffer);
 			return (0);
+		j = 2;
+		while (argv[j])
+		{
+			if (j > 2)
+			{
+				buffer = ft_strjoin(buffer, " ");
+				if (!buffer)
+				{
+					free(buffer);
+					return (0);
+				}				
+			}
+			buffer = ft_strjoin(buffer, argv[j]);
+			if (!buffer)
+			{
+				free(buffer);
+				return (0);
+			}
+			j++;
 		}
+		// j = 2;
+		// while (argv[j])
+		// {
+			i = 0;
+			while (buffer[i])
+			{
+				send_message(buffer[i], ft_atoi(argv[1]));
+				i++;
+			}
+			// if (argv[j + 1])
+			// 	send_message(' ', ft_atoi(argv[1]));
+			// j++;	
+		// }
+		while (1)
+			pause();
 	}
-	k = 0;
-	if (argc > 2)
-		send_message(buffer, ft_atoi(getpid()));
-	if (k < 0)
-	{
-		free(buffer);
+	else
 		return (0);
-	}
-	while (1)
-		pause();
+
 }
-
-// int x = 0;
-
-// void handle_sigusr1(int signal)
-// {
-// 	(void) signal;
-// 	if (x == 0)
-// 		printf("un indice");
-// }
-
-// int main(int argc, char **argv)
-// {
-// 	(void) argc;
-// 	(void) argv;
-
-// 	int pid = fork();
-// 	if (pid == -1)
-// 		return 1;
-	
-// 	// int pid = 0;
-// 	if (pid == 0)
-// 	{
-// 		// sleep(5);
-// 		kill(getpid(), SIGUSR1);
-// 	} else {
-// 		struct sigaction set;
-// 		set.sa_flags = SA_RESTART;
-// 		set.sa_handler = &handle_sigusr1;
-// 		sigaction(SIGUSR1, &set, NULL);
-
-
-// 		printf("3 x 5 ?");
-// 		scanf("%d", &x);
-// 		if (x == 15)
-// 			printf("OK");
-// 		else
-// 			printf("KO");
-// 		// wait(NULL);
-// 	}
-// }
-
-// void sigusr_handler(int signal)
-// {
-// 	if (signal == SIGUSR1)
-// 		printf("signal recu");
-// }
-
-// void	serveur(char *pid_server)
-// {
-// 	pid_t	pid_client;
-// 	struct sigaction act;
-
-// 	pid_client = getpid();
-	
-// 	sigaction(SIGUSR2, &act, NULL);
-// }
- 
-// void	aff_msg()
-// {
-	
-// }
- 
-// int	main(int argc, char **argv)
-// {
-// 	(void) argc;
-// 	(void) argv;
-// 	serveur(argv[1]);
-
-// 	while (1);
-// }

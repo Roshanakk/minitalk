@@ -3,30 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Roxy <Roxy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:14:23 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/02 16:28:34 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:07:50 by Roxy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void handle_signals(int signal)
+int nb;
+
+static void handle_signals(int signal, siginfo_t *info, void *context)
 {
+	static int	bit;
+	static int	i;
+
 	if (signal == SIGUSR1)
-		ft_printf("signal 1");
-	if (signal == SIGUSR2)
-		ft_printf("signal 2");
+		i |= (0x01 << bit);
+	bit++;
+	if (bit == 8)
+	{
+		ft_printf("%c", i);
+		if (i == 0)
+			kill(info->si_pid, SIGUSR1);	
+		bit = 0;
+		i = 0;
+	}
 }
+
 int	main(int argc, char **argv)
 {
-	ft_putstr_fd(ft_itoa(getpid()));
 	struct sigaction sig;
 
+	if (argc != 1)
+	{
+		ft_printf("Error\n");
+		return (1);
+	}
+	ft_printf("%d", getpid());
 	(void) argc;
 	(void) argv;
-	sig.sa_handler = &handle_signals;
+	ft_bzero(&sig, sizeof(sig));
+	sig.sa_sigaction = &handle_signals;
 	sigaction(SIGUSR1, &sig, NULL);
 	sigaction(SIGUSR2, &sig, NULL);
 	

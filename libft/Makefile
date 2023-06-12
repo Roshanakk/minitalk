@@ -8,8 +8,8 @@ SRC	= ft_printf.c	\
 	ft_itoa.c \
 	ft_strdup.c \
 	ft_atoi.c \
-	ft_putnbr_bin.c \
 	ft_strjoin.c \
+	ft_bzero.c \
 
 OBJ = ${SRC:.c=.o}
 

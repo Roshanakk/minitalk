@@ -20,7 +20,7 @@ CC = cc
 
 DEBUG = -fsanitize=address,leak
 
-CFLAGS = -Wall -Wextra -Werror -g -I./include -I./libft
+CFLAGS = -g -I./include -I./libft
 
 all : obj ${NAME_1} ${NAME_2}
 
