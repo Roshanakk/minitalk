@@ -6,7 +6,7 @@
 /*   By: Roxy <Roxy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:14:23 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/12 19:07:50 by Roxy             ###   ########.fr       */
+/*   Updated: 2023/06/13 11:28:20 by Roxy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,24 @@ int nb;
 static void handle_signals(int signal, siginfo_t *info, void *context)
 {
 	static int	bit;
-	static int	i;
+	static int	c;
 
 	if (signal == SIGUSR1)
-		i |= (0x01 << bit);
+		c |= (0x01 << bit);
 	bit++;
 	if (bit == 8)
 	{
-		ft_printf("%c", i);
-		if (i == 0)
-			kill(info->si_pid, SIGUSR1);	
+		ft_printf("%c", c);
+		// if (!c)
+		// {
+		if (kill(info->si_pid, SIGUSR1))
+			exit(0);
+			// ft_printf("on envoie");
+		// }
+		c = 0;
 		bit = 0;
-		i = 0;
 	}
+	// ft_printf("on envoie");
 }
 
 int	main(int argc, char **argv)
