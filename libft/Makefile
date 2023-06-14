@@ -10,6 +10,7 @@ SRC	= ft_printf.c	\
 	ft_atoi.c \
 	ft_strjoin.c \
 	ft_bzero.c \
+	ft_isdigit.c \
 
 OBJ = ${SRC:.c=.o}
 

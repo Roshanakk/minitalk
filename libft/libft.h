@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Roxy <Roxy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 14:18:47 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/12 17:47:47 by Roxy             ###   ########.fr       */
+/*   Updated: 2023/06/14 11:23:59 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_pointer(char c, va_list args, int *nbr);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *s);
 int	    ft_atoi(const char *nptr);
-// void	ft_putnbr_bin(unsigned long long nb);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char c);
+// char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_bzero(void *s, size_t n);
-// void	ft_putchar_bin(char c);
-// void	ft_putnbr_bin(unsigned long long nb);
+int	    ft_isdigit(int c);
+int     ft_alldigit(char *str);
 
 #endif

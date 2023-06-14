@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:27:54 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/13 18:53:42 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/14 18:48:19 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,9 @@ int bit_received;
 static void handle_signals(int signal)
 {
 	if (signal == SIGUSR1)
-	{
-		// ft_printf("SIGUSR2 recu\n");
 		bit_received = 1;
-		// ft_printf("bit received value : %d\n", bit_received);
-	}
 	if (signal == SIGUSR2)
-		ft_printf("message received\n");
+		ft_printf("\nMessage successfully received !\n");
 }
 
 void send_message(char c, pid_t server_pid)
@@ -34,7 +30,6 @@ void send_message(char c, pid_t server_pid)
 	int	bit;
 
 	bit = 0;
-	// ft_printf("bit received value : %d\n", bit_received);
 	
 	while (bit < 8)
 	{
@@ -51,8 +46,46 @@ void send_message(char c, pid_t server_pid)
 		bit++;
 		bit_received = 0;
 		while (!bit_received);
-		// usleep(100);
 	}
+}
+
+// void send_len(int len, pid_t server_pid)
+// {
+// 	int	bit;
+
+// 	bit = 0;
+	
+// 	while (bit < 8)
+// 	{
+// 		if ((len & (1 << bit)))
+// 		{	
+// 			if (kill(server_pid, SIGUSR1) < 0)
+// 				exit (0);
+// 		}
+// 		else
+// 		{	
+// 			if (kill(server_pid, SIGUSR2) < 0)
+// 				exit (0);			
+// 		}
+// 		bit++;
+// 		bit_received = 0;
+// 		while (!bit_received);
+// 	}
+// }
+
+int check_args(int argc, char **argv)
+{
+	if (argc != 3)
+	{
+		ft_printf("Invalid number of arguments");
+		return (0);
+	}
+	if (!ft_alldigit(argv[1]) || ft_atoi(argv[1]) > 4194304)
+	{
+		ft_printf("Invalid PID");
+		return (0);
+	}
+	return (1);
 }
 
 int main(int argc, char **argv)
@@ -61,50 +94,23 @@ int main(int argc, char **argv)
 	int i;
 
 	bit_received = 1;
-	if (argc != 3)
-	{
-		ft_printf("Invalid number of arguments");
+	if (!check_args(argc, argv))
 		return (0);
-	}
 	ft_bzero(&sig, sizeof(sig));
 	sig.sa_handler = handle_signals;
-	sigaction(SIGUSR1, &sig, NULL);
-	sigaction(SIGUSR2, &sig, NULL);
+	if (sigaction(SIGUSR1, &sig, NULL) < 0 
+		|| sigaction(SIGUSR2, &sig, NULL) < 0)
+		return (0);
 	i = 0;
+	// send_len(ft_strlen(argv[2]), ft_atoi(argv[1]));
+	send_message((char)(ft_strlen(argv[2])), ft_atoi(argv[1]));
 	while (argv[2][i])
 	{
 		send_message(argv[2][i], ft_atoi(argv[1]));
 		i++;
 	}
+	send_message(argv[2][i], ft_atoi(argv[1]));
 	while (1)
 		pause();
 	return (0);
 }
-
-
-////////////////////////////////////////////////////////////
-
-
-// static void action(int signal)
-// {
-// 	if (signal == SIGUSR2)
-// 		ft_printf("SIGUSR2 recu");
-// 	else
-// 		ft_printf("SIGUSR2 recu");
-// }
-
-// void send_message(pid_t server_pid)
-// {
-// 	kill(server_pid, SIGUSR1);
-// 	usleep(100);
-// }
-
-// int main(int argc, char **argv)
-// {
-// 	signal(SIGUSR1, action);
-// 	signal(SIGUSR2, action);
-// 	send_message(ft_atoi(argv[1]));
-// 	while (1)
-// 		pause();
-// 	return (0);
-// }

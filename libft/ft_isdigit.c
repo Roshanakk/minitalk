@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/02 14:50:03 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/14 11:29:39 by rraffi-k         ###   ########.fr       */
+/*   Created: 2023/06/14 10:10:06 by rraffi-k          #+#    #+#             */
+/*   Updated: 2023/06/14 10:41:42 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char c)
+int	ft_isdigit(int c)
 {
-	char	*string;
-	size_t	i;
-
-	if (!c)
-		return ((char *)s1);
-	if (!s1)
-		return (NULL);
-	string = malloc(sizeof(char) * (ft_strlen(s1) + 2));
-	if (!string)
+	if (c < '0' || c > '9')
 		return (0);
+	return (1);
+}
+
+int ft_alldigit(char *str)
+{
+	int	i;
+
 	i = 0;
-	while (((char *)s1)[i])
+	while (str[i])
 	{
-		string[i] = ((char *)s1)[i];
+		if (!ft_isdigit(str[i]))
+			return (0);
 		i++;
 	}
-	string[i] = c;
-	string[i + 1] = '\0';
-	return (string);
+	return (1);
 }
