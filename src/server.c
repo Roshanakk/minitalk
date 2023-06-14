@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:14:23 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/13 18:35:56 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:53:14 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,16 @@ static void handle_signals(int signal, siginfo_t *info, void *context)
 	(void) context;
 	if (signal == SIGUSR1)
 		c |= (0x01 << bit);
-	// else if (signal == SIGUSR1)
-	// 	c &= ~(0x01 << bit);
 	bit++;
 	if (bit == 8)
 	{
-		// usleep(100);
-		// ft_printf("on envoie SIGUSR2\n");
-		// if (kill(info->si_pid, SIGUSR2) < 0)
-		// 	exit(0);
+		if (kill(info->si_pid, SIGUSR2) < 0)
+			exit(0);
 		ft_printf("%c", c);
 		c = 0;
 		bit = 0;
 	}
-	kill(info->si_pid, SIGUSR2);
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:27:54 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/13 18:36:16 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:53:42 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ int bit_received;
 
 static void handle_signals(int signal)
 {
-	if (signal == SIGUSR2)
+	if (signal == SIGUSR1)
 	{
 		// ft_printf("SIGUSR2 recu\n");
 		bit_received = 1;
 		// ft_printf("bit received value : %d\n", bit_received);
 	}
+	if (signal == SIGUSR2)
+		ft_printf("message received\n");
 }
 
 void send_message(char c, pid_t server_pid)
