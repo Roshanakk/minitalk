@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:27:54 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/14 18:48:19 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/15 10:54:54 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,6 @@ void send_message(char c, pid_t server_pid)
 	}
 }
 
-// void send_len(int len, pid_t server_pid)
-// {
-// 	int	bit;
-
-// 	bit = 0;
-	
-// 	while (bit < 8)
-// 	{
-// 		if ((len & (1 << bit)))
-// 		{	
-// 			if (kill(server_pid, SIGUSR1) < 0)
-// 				exit (0);
-// 		}
-// 		else
-// 		{	
-// 			if (kill(server_pid, SIGUSR2) < 0)
-// 				exit (0);			
-// 		}
-// 		bit++;
-// 		bit_received = 0;
-// 		while (!bit_received);
-// 	}
-// }
-
 int check_args(int argc, char **argv)
 {
 	if (argc != 3)
@@ -102,7 +78,6 @@ int main(int argc, char **argv)
 		|| sigaction(SIGUSR2, &sig, NULL) < 0)
 		return (0);
 	i = 0;
-	// send_len(ft_strlen(argv[2]), ft_atoi(argv[1]));
 	send_message((char)(ft_strlen(argv[2])), ft_atoi(argv[1]));
 	while (argv[2][i])
 	{

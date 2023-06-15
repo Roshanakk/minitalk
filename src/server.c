@@ -6,7 +6,7 @@
 /*   By: rraffi-k <rraffi-k@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:14:23 by rraffi-k          #+#    #+#             */
-/*   Updated: 2023/06/14 18:58:44 by rraffi-k         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:00:41 by rraffi-k         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,25 @@ static void handle_signals(int signal, siginfo_t *info, void *context)
 	{
 		if (i == 0)
 		{
-			ft_printf("%d", (int)c);
 			buffer_size = (int)c;
 			buffer = malloc(sizeof(char) * (buffer_size + 1));
 			if (!buffer)
 				exit (0);
 			i++;
 		} else {
-			buffer[i] = c;
+			buffer[i - 1] = c;
 			i++;
 			if (!c)
 			{
-				// ft_printf("%s\n", buffer);
+				ft_printf("%s\n", buffer);
 				if (kill(info->si_pid, SIGUSR2) < 0)
 				{
 					free(buffer);
 					exit(0);
 				}
 				ft_bzero(buffer, buffer_size);
+				free(buffer);
 				i = 0;
-				return ;
-			}
-			if (i == buffer_size)
-			{
-				// ft_printf("%s", buffer);
-				ft_bzero(buffer, buffer_size);
-				i = 0;
-				return ;
 			}
 		}
 		c = 0;
@@ -64,6 +56,7 @@ static void handle_signals(int signal, siginfo_t *info, void *context)
 	if (kill(info->si_pid, SIGUSR1) < 0)
 		exit(0);
 }
+
 
 int	main(int argc, char **argv)
 {
@@ -80,12 +73,8 @@ int	main(int argc, char **argv)
 	sig.sa_sigaction = handle_signals;
 	sigaction(SIGUSR1, &sig, NULL);
 	sigaction(SIGUSR2, &sig, NULL);
-	// if (buffer)
-	// 	ft_printf("%s\n", buffer);
 	while (1)
-	{
 		pause();
-	}
 }
 
 
