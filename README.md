@@ -13,7 +13,7 @@ The server displays its PID and receives decrypted signals as characters, while 
 make 
 ```
 
-<li>Run server and copy its PID</li>
+<li>Run the server and copy its PID</li>
 
 ```
 ./server 
