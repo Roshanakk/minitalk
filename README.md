@@ -25,4 +25,4 @@ make
 ./client <PID>
 ```
 
-<li>Grab a cup of coffee and have a little chit chat 😎</li>
+<li>Have a little chit chat !</li>
